@@ -7,7 +7,8 @@ if(isset($_POST['sub'])){
     $t=$_POST['text1'];
     $u=$_POST['text2'];
     $i="INSERT INTO news(short_description,article) VALUE ('$t','$u')";
-    mysqli_query($pdo, $i);
+    $stmt = $pdo->prepare($i);
+    $stmt->execute();
 }
 
 ?>
@@ -23,13 +24,13 @@ if(isset($_POST['sub'])){
     <table>
         <tr>
             <td>
-                Article Title
+                Description
                 <input type="text" name="text1">
             </td>
         </tr>
         <tr>
             <td>
-                Article Content Sniuppet
+                Article
                 <input type="text" name="text2">
             </td>
         </tr>
