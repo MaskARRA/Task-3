@@ -11,6 +11,9 @@ if(isset($_POST['sub'])){
     $stmt->execute();
 }
 
+    $result= $pdo->query("SELECT * FROM news")->fetchAll();
+  
+
 ?>
 <html lang="en">
 <head>
@@ -42,5 +45,17 @@ if(isset($_POST['sub'])){
         </tr>
     </table>
 </form>
+<div>
+    <table>
+        <tr>
+            <td>Description</td>
+            <td><?php foreach ($result as $data) { echo $data['short_description']."<br />\n"; }?></td>
+        </tr>
+        <tr>
+            <td>Article</td>
+            <td><?php foreach ($result as $data) { echo $data['article']."<br />\n"; }?></td>
+        </tr>
+    </table>
+</div>
 </body>
 </html>
