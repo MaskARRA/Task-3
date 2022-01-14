@@ -2,14 +2,44 @@
 <?php
 include 'db_conn.php';
 
-$query = "SELECT * FROM news WHERE id=".$_GET['x']."";
 
-$res = mysql_query($con, $query);
-if($res && mysql_num_rows($res)>0){
-while($row = mysql_fetch_assoc($res)){
-echo $row['short_description'];
-echo $row['article'];
+if(isset($_POST['sub'])){
+    $t=$_POST['text1'];
+    $u=$_POST['text2'];
+    $i="INSERT INTO news(short_description,article) VALUE ('$t','$u')";
+    mysqli_query($pdo, $i);
 }
-}
+
 ?>
-
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<form method="POST" action="">
+    <table>
+        <tr>
+            <td>
+                Article Title
+                <input type="text" name="text1">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Article Content Sniuppet
+                <input type="text" name="text2">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Create new article
+                <input type="submit" value="submit" name="sub">
+            </td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>
