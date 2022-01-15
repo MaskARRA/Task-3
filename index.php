@@ -6,13 +6,25 @@ include 'db_conn.php';
 if(isset($_POST['sub'])){
     $t=$_POST['text1'];
     $u=$_POST['text2'];
-    $i="INSERT INTO news(short_description,article) VALUE ('$t','$u')";
-    $stmt = $pdo->prepare($i);
-    $stmt->execute();
+    $i="INSERT INTO news(short_description,article) VALUE ('$t','$u')"; 
+    $stmt = $dsn->prepare($i);
+    $stmt->bindValue('short_description', $t,  PDO::PARAM_STR);
+    $stmt->bindValue('article', $u,  PDO::PARAM_STR);
+    if($stmt){
+        $stmt->execute();
+        header ('location:index.php');
+    }
+    
+    
+    else{
+        header("HTTP/1.0 404 Not Found");
+        echo "Oops, page wasn't found!";
+       
+    }
+ 
 }
 
-    $result= $pdo->query("SELECT * FROM news")->fetchAll();
-  
+   
 
 ?>
 <html lang="en">
@@ -47,14 +59,34 @@ if(isset($_POST['sub'])){
 </form>
 <div>
     <table>
-        <tr>
-            <td>Description</td>
-            <td><?php foreach ($result as $data) { echo $data['short_description']."<br />\n"; }?></td>
-        </tr>
-        <tr>
-            <td>Article</td>
-            <td><?php foreach ($result as $data) { echo $data['article']."<br />\n"; }?></td>
-        </tr>
+        
+        <thead>
+            <tr>
+                <th style="text-align:center;">ID</th>
+                <th style="text-align:center;">Description</th>
+                <th style="text-align:center;">Article</th>
+            </tr>
+        </thead>
+        <?php
+
+        $result= $dsn->prepare("SELECT * FROM news ORDER BY id ASC");
+        $result->bindValue(':short_description', PDO::PARAM_STR);
+        $result->bindValue(':article', PDO::PARAM_STR);
+        $result->execute();
+        for ($i=0; $row = $result->fetch(\PDO::FETCH_ASSOC); $i++) {
+        $id=$row['id'];
+
+        ?>
+        <tbody>
+            <tr>
+                <td style="text-align:center; word-break:break-all; width:300px;"><?php echo $row ['id']; ?></td>
+                <td style="text-align:center; word-break:break-all; width:300px;"><?php echo $row ['short_description']; ?></td>
+                <td style="text-align:center; word-break:break-all; width:300px;"><?php echo $row ['article']; ?></td>
+                <td style="text-align:center; width:350px;"><a href="x.php<?php echo '?id='.$id; ?>">Select</a></td>
+            </tr>
+            <?php } ?>
+        </tbody>
+
     </table>
 </div>
 </body>
