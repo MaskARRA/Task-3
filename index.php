@@ -17,8 +17,7 @@ if(isset($_POST['sub'])){
     
     
     else{
-        header("HTTP/1.0 404 Not Found");
-        echo "Oops, page wasn't found!";
+        echo "<p class='echo'> 404 NOT FOUND </P>";
        
     }
  
